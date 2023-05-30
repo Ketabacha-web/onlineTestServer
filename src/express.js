@@ -14,6 +14,7 @@ import { systems } from "./routers/systems.router.js";
 import { questionsRouter } from "./routers/questions.router.js";
 import { createTestRouter } from "./routers/createTest.router.js";
 import { examHistoryRouter } from "./routers/examHistory.router.js";
+import { adminLoginRouter } from "./routers/adminLogin.router.js";
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
@@ -36,6 +37,7 @@ app.use(errorHandler);
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/login", loginRouter);
+app.use("/adminLogin", adminLoginRouter);
 app.use("/subject", subjects);
 app.use("/system", systems);
 app.use("/question", questionsRouter);

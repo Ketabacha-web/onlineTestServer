@@ -7,15 +7,15 @@ import validateTextMiddleware from "../components/middlewares/validations/valida
 import { db } from "../config/mySql.db.connection.config.js";
 
 // CREATING EXPRESS ROUTER
-export const loginRouter = express.Router();
+export const adminLoginRouter = express.Router();
 
 // Endpoint to handle user login requests
-loginRouter.post("/user", async (req, res) => {
+adminLoginRouter.post("/user", async (req, res) => {
   const { email, password } = req.body;
 
   try {
     // Check if user with the given email exists
-    const user = await db("users").where({ email }).first();
+    const user = await db("users").where({ email, role: "admin" }).first();
     if (!user) {
       return res.status(404).json({ message: "Invalid Email" });
     }
@@ -28,7 +28,7 @@ loginRouter.post("/user", async (req, res) => {
 
     // Create a JWT token with a 1-hour expiration time
     const token = jwt.sign({ userId: user.id }, "your_secret_key", {
-      expiresIn: "2d",
+      expiresIn: "1d",
     });
 
     // res
@@ -38,13 +38,8 @@ loginRouter.post("/user", async (req, res) => {
     //     sameSite: "none",
     //   })
     //   .json({ message: "Login successful" });
-    // console.log(user);
-    res.json({
-      message: "Login successful",
-      userId: user.id,
-      token: token,
-      isActivated: user.is_actived,
-    });
+
+    res.json({ message: "Login successful", userId: user.id, token: token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "An error occurred during login" });

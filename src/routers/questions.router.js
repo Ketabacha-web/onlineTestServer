@@ -14,6 +14,7 @@ import express, { json } from "express";
 import multer from "multer";
 // const fs = require("fs");
 import fs from "fs";
+import verifyToken from "../components/middlewares/verifyToken.middleware.js";
 
 // CREATING EXPRESS ROUTER
 export const questionsRouter = express.Router();
@@ -210,18 +211,29 @@ const upload = multer();
 
 questionsRouter.post(
   "/",
+  verifyToken,
   uploadFiles.fields([
     { name: "questionAudioFile" },
     { name: "answerOptionAudioFile0" },
     { name: "answerOptionAudioFile1" },
     { name: "answerOptionAudioFile2" },
     { name: "answerOptionAudioFile3" },
+    // 4 optional options
+    { name: "answerOptionAudioFile4" },
+    { name: "answerOptionAudioFile5" },
+    { name: "answerOptionAudioFile6" },
+    { name: "answerOptionAudioFile7" },
 
     { name: "questionImageFile" },
     { name: "answerOptionImageFile0" },
     { name: "answerOptionImageFile1" },
     { name: "answerOptionImageFile2" },
     { name: "answerOptionImageFile3" },
+    // 4 optional options
+    { name: "answerOptionImageFile4" },
+    { name: "answerOptionImageFile5" },
+    { name: "answerOptionImageFile6" },
+    { name: "answerOptionImageFile7" },
   ]),
 
   async (req, res) => {
@@ -322,6 +334,51 @@ questionsRouter.post(
           is_correct: JSON.parse(req.body.isCorrectAnswer3),
           question_id,
         },
+        // 4 optional options
+        {
+          option_text: JSON.parse(req.body.answerOptionText4).value,
+          option_audio: req.files.answerOptionAudioFile4
+            ? req.files.answerOptionAudioFile4[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile4
+            ? req.files.answerOptionImageFile4[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer4),
+          question_id,
+        },
+        {
+          option_text: JSON.parse(req.body.answerOptionText5).value,
+          option_audio: req.files.answerOptionAudioFile5
+            ? req.files.answerOptionAudioFile5[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile5
+            ? req.files.answerOptionImageFile5[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer5),
+          question_id,
+        },
+        {
+          option_text: JSON.parse(req.body.answerOptionText6).value,
+          option_audio: req.files.answerOptionAudioFile6
+            ? req.files.answerOptionAudioFile6[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile6
+            ? req.files.answerOptionImageFile6[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer6),
+          question_id,
+        },
+        {
+          option_text: JSON.parse(req.body.answerOptionText7).value,
+          option_audio: req.files.answerOptionAudioFile7
+            ? req.files.answerOptionAudioFile7[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile7
+            ? req.files.answerOptionImageFile7[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer7),
+          question_id,
+        },
       ];
 
       // Insert product record into `products` table
@@ -341,18 +398,29 @@ questionsRouter.post(
 // UPDATE
 questionsRouter.put(
   "/:id",
+  verifyToken,
   uploadFiles.fields([
     { name: "questionAudioFile" },
     { name: "answerOptionAudioFile0" },
     { name: "answerOptionAudioFile1" },
     { name: "answerOptionAudioFile2" },
     { name: "answerOptionAudioFile3" },
+    // 4 optional options
+    { name: "answerOptionAudioFile4" },
+    { name: "answerOptionAudioFile5" },
+    { name: "answerOptionAudioFile6" },
+    { name: "answerOptionAudioFile7" },
 
     { name: "questionImageFile" },
     { name: "answerOptionImageFile0" },
     { name: "answerOptionImageFile1" },
     { name: "answerOptionImageFile2" },
     { name: "answerOptionImageFile3" },
+    // 4 optional options
+    { name: "answerOptionImageFile4" },
+    { name: "answerOptionImageFile5" },
+    { name: "answerOptionImageFile6" },
+    { name: "answerOptionImageFile7" },
   ]),
   async (req, res) => {
     // console.log(JSON.parse(req.body.isCorrectAnswer1));
@@ -472,6 +540,55 @@ questionsRouter.put(
             ? req.files.answerOptionImageFile3[0].path
             : null,
           is_correct: JSON.parse(req.body.isCorrectAnswer3),
+          question_id: req.params.id,
+        },
+        // 4 optional options
+        {
+          id: JSON.parse(req.body.answerId4),
+          option_text: JSON.parse(req.body.answerOptionText4).value,
+          option_audio: req.files.answerOptionAudioFile4
+            ? req.files.answerOptionAudioFile4[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile4
+            ? req.files.answerOptionImageFile4[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer4),
+          question_id: req.params.id,
+        },
+        {
+          id: JSON.parse(req.body.answerId5),
+          option_text: JSON.parse(req.body.answerOptionText5).value,
+          option_audio: req.files.answerOptionAudioFile5
+            ? req.files.answerOptionAudioFile5[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile5
+            ? req.files.answerOptionImageFile5[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer5),
+          question_id: req.params.id,
+        },
+        {
+          id: JSON.parse(req.body.answerId6),
+          option_text: JSON.parse(req.body.answerOptionText6).value,
+          option_audio: req.files.answerOptionAudioFile6
+            ? req.files.answerOptionAudioFile6[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile6
+            ? req.files.answerOptionImageFile6[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer6),
+          question_id: req.params.id,
+        },
+        {
+          id: JSON.parse(req.body.answerId7),
+          option_text: JSON.parse(req.body.answerOptionText7).value,
+          option_audio: req.files.answerOptionAudioFile7
+            ? req.files.answerOptionAudioFile7[0].path
+            : null,
+          option_image: req.files.answerOptionImageFile7
+            ? req.files.answerOptionImageFile7[0].path
+            : null,
+          is_correct: JSON.parse(req.body.isCorrectAnswer7),
           question_id: req.params.id,
         },
       ];

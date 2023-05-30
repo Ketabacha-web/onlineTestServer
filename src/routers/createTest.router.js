@@ -300,7 +300,7 @@ createTestRouter.post("/", async (req, res) => {
       }
       // ---------------------------
 
-      console.log(questions);
+      // console.log(questions);
       res.json(questions);
     } catch (error) {
       console.error(error);
