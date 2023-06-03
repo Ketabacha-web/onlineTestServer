@@ -7,7 +7,8 @@ export const db = knex({
   connection: {
     host: "127.0.0.1",
     port: 3306,
-    user: "root",
+    // user: "root",
+    user: "admin",
     // user: "shambfuc_root",
     password: "ICUBE2018",
     // password: "q9]6%j5P$+ji",
