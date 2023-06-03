@@ -9,7 +9,7 @@ export const db = knex({
     port: 3306,
     user: "root",
     // user: "shambfuc_root",
-    password: "sayeedi6651",
+    password: "ICUBE2018",
     // password: "q9]6%j5P$+ji",
     database: "online_exam_db",
     // database: "shambfuc_shamsd",
