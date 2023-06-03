@@ -52,7 +52,7 @@ server.listen(PORT, async () => {
     }
 
     // Close the database connection
-    await db.destroy();
+    // await db.destroy();
   } catch (error) {
     Log.error("Error occurred while inserting admin user:", error);
   }
