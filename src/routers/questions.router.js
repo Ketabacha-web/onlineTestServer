@@ -270,6 +270,17 @@ questionsRouter.post(
 
       // handle the form data here, e.g. save to a database
 
+      // Creating the current date sql yoq not support timestamp 2 times
+      const currentDate = new Date();
+
+      // Getting the components of the current date
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to month since it's zero-based
+      const day = String(currentDate.getDate()).padStart(2, "0");
+
+      // Formatting the date in "YYYY-MM-DD" format
+      const formattedDate = `${year}-${month}-${day}`;
+
       // INSERT IN APPLICATION
       const [question_id] = await db("questions").insert({
         question_text,
@@ -278,6 +289,7 @@ questionsRouter.post(
         question_score,
         subject,
         system,
+        updated_at: formattedDate,
       });
 
       // Insert application records into `applications` table
@@ -476,11 +488,23 @@ questionsRouter.put(
       // ----------
 
       // Update question record in `qustions` table
+      // Creating the current date sql yoq not support timestamp 2 times
+      const currentDate = new Date();
+
+      // Getting the components of the current date
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to month since it's zero-based
+      const day = String(currentDate.getDate()).padStart(2, "0");
+
+      // Formatting the date in "YYYY-MM-DD" format
+      const formattedDate = `${year}-${month}-${day}`;
+      
       const updateObject = {
         question_text,
         question_score,
         subject,
         system,
+        updated_at: formattedDate,
       };
 
       if (question_audio !== null) {
