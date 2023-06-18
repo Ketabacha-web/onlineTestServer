@@ -66,25 +66,25 @@ userRouter.post(
         service: "gmail",
         auth: {
           // user: process.env.GMAIL_USER,
-          user: "test.mail.developer.jsx@gmail.com",
+          user: "medullah.academy@gmail.com",
           // pass: process.env.GMAIL_PASSWORD,
-          pass: "hzubtijswamlqqzp",
+          pass: "aegfttbzssvhricl",
         },
       });
-      const verificationUrl = `http://localhost:8080/user/verify-email?token=${verificationToken}`;
+      const verificationUrl = `http://162.254.33.206:10000/user/verify-email?token=${verificationToken}`;
       const mailOptions = {
         // from: process.env.GMAIL_USER,
-        from: "test.mail.developer.jsx@gmail.com",
+        from: "medullah.academy@gmail.com",
         to: email,
         subject: "Verify your email address",
         html: `<p>Please click the following link to verify your email address:</p><p><a href="${verificationUrl}">${verificationUrl}</a></p>`,
       };
 
-      const verificationUrl2 = `http://localhost:8080/user/active-email?token=${verificationToken}`;
+      const verificationUrl2 = `http://162.254.33.206:10000/user/active-email?token=${verificationToken}`;
       const mailOptions2 = {
         // from: process.env.GMAIL_USER,
-        from: "test.mail.developer.jsx@gmail.com",
-        to: email,
+        from: "medullah.academy@gmail.com",
+        to: "medullah.academy@gmail.com",
         subject: "Active your client email address",
         html: `<p>Please click the following link to active your client email address:</p><p><a href="${verificationUrl2}">${verificationUrl2}</a></p>`,
       };
@@ -203,17 +203,17 @@ userRouter.post("/forgot-password", verifyToken, async (req, res) => {
       service: "gmail",
       auth: {
         // user: process.env.GMAIL_USER,
-        user: "test.mail.developer.jsx@gmail.com",
+        user: "medullah.academy@gmail.com",
         // pass: process.env.GMAIL_PASSWORD,
-        pass: "hzubtijswamlqqzp",
+        pass: "aegfttbzssvhricl",
       },
     });
     const mailOptions = {
       // from: "noreply@yourapp.com",
-      from: "test.mail.developer.jsx@gmail.com",
+      from: "medullah.academy@gmail.com",
       to: email,
       subject: "Password Reset",
-      text: `You are receiving this email because you (or someone else) has requested a password reset for your account.\n\nPlease click on the following link or paste this into your browser to complete the process:\n\nhttp://localhost:3000/login/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
+      text: `You are receiving this email because you (or someone else) has requested a password reset for your account.\n\nPlease click on the following link or paste this into your browser to complete the process:\n\nhttp://medulla.academy/login/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
     await transporter.sendMail(mailOptions);
     res.json({ message: "Password reset email sent successfully" });
