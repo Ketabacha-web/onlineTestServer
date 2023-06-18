@@ -179,6 +179,27 @@ userRouter.put("/change-password", verifyToken, async (req, res) => {
   }
 });
 
+// Active user endpoint update
+userRouter.put("/active-email/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { id, is_actived } = req.body;
+    // console.log(req.body);
+
+    const user = await db("users").where({ id: userId }).first();
+    if (!user) {
+      return res.status(400).json({ error: "NO USER FOUND!" });
+    }
+    await db("users")
+      .where({ id: user.id })
+      .update({ actived_at: new Date(), is_actived });
+    // res.json({ message: "Email address verified successfully" });
+    res.json({ message: "user activity changed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+});
 // ----------------
 
 // const crypto = require("crypto");

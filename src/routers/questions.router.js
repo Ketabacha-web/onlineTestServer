@@ -257,6 +257,7 @@ questionsRouter.post(
 
       // const image_name = `${getFormattedDate()}_${req.file.originalname}`;
 
+      const questionID = req.body.questionID;
       const question_text = JSON.parse(req.body.questionText).value;
       const question_audio = req.files.questionAudioFile
         ? req.files.questionAudioFile[0].path
@@ -283,6 +284,7 @@ questionsRouter.post(
 
       // INSERT IN APPLICATION
       const [question_id] = await db("questions").insert({
+        questionID,
         question_text,
         question_audio,
         question_image,
