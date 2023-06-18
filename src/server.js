@@ -25,20 +25,20 @@ server.listen(PORT, async () => {
   try {
     // Check if the admin user exists in the database
     const adminUser = await db("users")
-      .where({ email: "test.mail.developer.jsx@gmail.com" })
+      .where({ email: "medullah.academy@gmail.com" })
       .first();
 
     // If the admin user doesn't exist, insert it into the database
     if (!adminUser) {
       // Hash and salt the password
-      const hashedPassword = await bcrypt.hash("Test@1234", 10);
+      const hashedPassword = await bcrypt.hash("Med@12345", 10);
 
       const verificationToken = crypto.randomBytes(20).toString("hex");
 
       await db("users").insert({
         name: "admin",
         lastname: "admin",
-        email: "test.mail.developer.jsx@gmail.com",
+        email: "medullah.academy@gmail.com",
         password: hashedPassword,
         role: "admin",
         verification_token: verificationToken,
