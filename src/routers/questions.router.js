@@ -37,6 +37,14 @@ questionsRouter.get("/", async (req, res) => {
       const audioData = filePath2 && fs.readFileSync(filePath2);
       const base64Audio = filePath2 && audioData.toString("base64");
 
+      // description
+      const filePathDescription = question.question_description_image;
+      const imageDataDescription =
+        filePathDescription && fs.readFileSync(filePathDescription);
+      const base64ImageDescription =
+        filePathDescription && imageDataDescription.toString("base64");
+      // -----------
+
       // -------
 
       const options = await db("options")
@@ -59,6 +67,7 @@ questionsRouter.get("/", async (req, res) => {
         options: formattedOptions,
         questionImageData: base64Image,
         questionAudioData: base64Audio,
+        questionImageDataDescription: base64ImageDescription,
         ...question,
       };
     });
@@ -225,6 +234,7 @@ questionsRouter.post(
     { name: "answerOptionAudioFile7" },
 
     { name: "questionImageFile" },
+    { name: "questionDescriptionImageFile" },
     { name: "answerOptionImageFile0" },
     { name: "answerOptionImageFile1" },
     { name: "answerOptionImageFile2" },
@@ -265,6 +275,15 @@ questionsRouter.post(
       const question_image = req.files.questionImageFile
         ? req.files.questionImageFile[0].path
         : null;
+      // question description
+      const question_description_text = JSON.parse(
+        req.body.questionDescription
+      ).value;
+
+      const question_description_image = req.files.questionDescriptionImageFile
+        ? req.files.questionDescriptionImageFile[0].path
+        : null;
+      // --------------------
       const question_score = JSON.parse(req.body.questionScore).value;
       const subject = JSON.parse(req.body.subject).value;
       const system = JSON.parse(req.body.system).value;
@@ -288,6 +307,8 @@ questionsRouter.post(
         question_text,
         question_audio,
         question_image,
+        question_description_text,
+        question_description_image,
         question_score,
         subject,
         system,
@@ -426,6 +447,7 @@ questionsRouter.put(
     { name: "answerOptionAudioFile7" },
 
     { name: "questionImageFile" },
+    { name: "questionDescriptionImageFile" },
     { name: "answerOptionImageFile0" },
     { name: "answerOptionImageFile1" },
     { name: "answerOptionImageFile2" },
@@ -464,6 +486,15 @@ questionsRouter.put(
       const question_image = req.files.questionImageFile
         ? req.files.questionImageFile[0].path
         : null;
+      // question description
+      const question_description_text = JSON.parse(
+        req.body.questionDescription
+      ).value;
+
+      const question_description_image = req.files.questionDescriptionImageFile
+        ? req.files.questionDescriptionImageFile[0].path
+        : null;
+      // --------------------
       const question_score = JSON.parse(req.body.questionScore).value;
       const subject = JSON.parse(req.body.subject).value;
       const system = JSON.parse(req.body.system).value;
@@ -485,6 +516,14 @@ questionsRouter.put(
         question_audio && fs.unlinkSync(filePathAudio);
       }
 
+      // question description
+      const filePathDescriptionImage =
+        question_description_image && question.question_description_image;
+      if (filePathDescriptionImage) {
+        question_description_image && fs.unlinkSync(filePathDescriptionImage);
+      }
+      // --------------------
+
       // const image_name = `${getFormattedDate()}_${req.file.originalname}`;
       // fs.renameSync(req.file.path, `src/uploadedImages/products/${image_name}`);
       // ----------
@@ -500,9 +539,10 @@ questionsRouter.put(
 
       // Formatting the date in "YYYY-MM-DD" format
       const formattedDate = `${year}-${month}-${day}`;
-      
+
       const updateObject = {
         question_text,
+        question_description_text,
         question_score,
         subject,
         system,
@@ -516,6 +556,11 @@ questionsRouter.put(
       if (question_image !== null) {
         updateObject.question_image = question_image;
       }
+      // question description
+      if (question_description_image !== null) {
+        updateObject.question_description_image = question_description_image;
+      }
+      // ====================
       await db("questions").where({ id: req.params.id }).update(updateObject);
 
       // UPDATE ANSWERS OPTIONS TABLE
@@ -696,6 +741,12 @@ questionsRouter.delete("/:id", async (req, res) => {
 
     const filePath2 = question.question_audio && question.question_audio;
     question.question_audio && fs.unlinkSync(filePath2);
+    // description
+    const filePathDescription =
+      question.question_description_image &&
+      question.question_description_image;
+    question.question_description_image && fs.unlinkSync(filePathDescription);
+    // -----------
     // ----
     options?.forEach((option) => {
       const filePath = option.option_image && option.option_image;

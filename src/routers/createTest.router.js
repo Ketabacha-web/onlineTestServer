@@ -182,6 +182,7 @@ createTestRouter.post("/", async (req, res) => {
             question_text: row.question_text,
             // question_audio: row.question_audio,
             // question_image: row.question_image,
+            question_description_text: row.question_description_text,
             question_score: row.question_score,
             subject: row.subject,
             system: row.system,
@@ -206,6 +207,15 @@ createTestRouter.post("/", async (req, res) => {
             question.question_image = base64Image;
           } else {
             question.question_image = null;
+          }
+
+          if (row.question_description_image) {
+            const filePath3 = row.question_description_image;
+            const imageData = fs.readFileSync(filePath3);
+            const base64Image = imageData.toString("base64");
+            question.question_description_image = base64Image;
+          } else {
+            question.question_description_image = null;
           }
 
           questions.push(question);
@@ -345,6 +355,7 @@ createTestRouter.post("/questionBankTest", async (req, res) => {
           id: row.question_id,
           testId: createTestId[0],
           question_text: row.question_text,
+          question_description_text: row.question_description_text,
           question_score: row.question_score,
           subject: row.subject,
           system: row.system,
@@ -369,6 +380,15 @@ createTestRouter.post("/questionBankTest", async (req, res) => {
           question.question_image = base64Image;
         } else {
           question.question_image = null;
+        }
+
+        if (row.question_description_image) {
+          const filePath3 = row.question_description_image;
+          const imageData = fs.readFileSync(filePath3);
+          const base64Image = imageData.toString("base64");
+          question.question_description_image = base64Image;
+        } else {
+          question.question_description_image = null;
         }
 
         formattedQuestions.push(question);
