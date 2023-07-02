@@ -3,15 +3,18 @@ import multer from "multer";
 import { getFormattedDate } from "./formatedDate.component.js";
 
 export function fileUploader(destination, audio) {
+  // console.log(`${process.cwd()}/${destination}`);
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       // Specify the destination folder where uploaded files will be stored
       // cb(null, destination);
 
       if (file.mimetype.startsWith("image/")) {
-        cb(null, destination);
+        // cb(null, destination);
+        cb(null, `${process.cwd()}/${destination}`);
       } else if (file.mimetype.startsWith("audio/")) {
-        cb(null, audio);
+        // cb(null, audio);
+        cb(null, `${process.cwd()}/${audio}`);
       } else {
         cb(new Error("Invalid file type"));
       }
