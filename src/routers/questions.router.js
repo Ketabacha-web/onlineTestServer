@@ -214,7 +214,8 @@ questionsRouter.get("/brand/:id", async (req, res) => {
 // -----------------------
 // POST
 
-const uploadFiles = fileUploader("src/uploads/images", "src/uploads/audios");
+// const uploadFiles = fileUploader("src/uploads/images", "src/uploads/audios");
+const uploadFiles = fileUploader("uploads/images", "uploads/audios");
 
 const upload = multer();
 
