@@ -139,9 +139,15 @@ userRouter.get("/active-email", async (req, res) => {
   if (!user) {
     return res.status(400).json({ error: "Invalid verification token" });
   }
-  await db("users")
-    .where({ id: user.id })
-    .update({ actived_at: new Date(), is_actived: true });
+
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 30);
+
+  await db("users").where({ id: user.id }).update({
+    actived_at: new Date(),
+    is_actived: true,
+    expire_at: expirationDate,
+  });
   // res.json({ message: "Email address verified successfully" });
   res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -156,6 +162,25 @@ userRouter.get("/active-email", async (req, res) => {
 </body>
 </html>`);
 });
+
+userRouter.get("/check-expiration", async (req, res) => {
+  const currentDate = new Date();
+
+  const expiredUsers = await db("users")
+    .where("expire_at", "<", currentDate)
+    .andWhere("is_actived", true);
+
+  if (expiredUsers.length === 0) {
+    return res.json({ message: "No expired users found" });
+  }
+
+  const expiredUserIds = expiredUsers.map((user) => user.id);
+
+  await db("users").whereIn("id", expiredUserIds).update({ is_actived: false });
+
+  res.json({ message: "Expired users have been updated" });
+});
+
 // ------------
 
 userRouter.put("/change-password", verifyToken, async (req, res) => {
@@ -190,9 +215,15 @@ userRouter.put("/active-email/:id", async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: "NO USER FOUND!" });
     }
-    await db("users")
-      .where({ id: user.id })
-      .update({ actived_at: new Date(), is_actived });
+
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 30);
+
+    await db("users").where({ id: user.id }).update({
+      actived_at: new Date(),
+      is_actived,
+      expire_at: expirationDate,
+    });
     // res.json({ message: "Email address verified successfully" });
     res.json({ message: "user activity changed successfully" });
   } catch (error) {
